@@ -776,10 +776,10 @@
   <div class="cta-inner">
     <h2 class="cta-title reveal">Join the<br><em>Ayra era.</em></h2>
     <p class="cta-sub reveal reveal-delay-1">Be first to know when new planners drop. No noise — just your next level.</p>
-    <div class="email-form reveal reveal-delay-2">
+    <form id="form" class="email-form reveal reveal-delay-2">
       <input name="email" class="email-input" type="email" placeholder="jeandoe@mail.com" />
       <button type="submit" class="btn-cta">I'm in ✦</button>
-    </div>
+    </form>
     <p class="cta-note reveal reveal-delay-3">No spam. Unsubscribe anytime. Just girl goals.</p>
   </div>
 </section>
@@ -818,33 +818,49 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
- document.querySelector('.btn-cta').addEventListener('click', async () => {
-  let input = document.querySelector('.email-input');
+const form = document.getElementById('form');
+const input = document.querySelector('email-input');
+const btn = form.querySelector('button[type="submit"]');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
   if (!input.value || !input.value.includes('@')) {
     input.style.borderColor = '#E8A44A';
     input.placeholder = 'Enter a valid email ✦';
+    input.value = '';
     return;
   }
 
+  const formData = new FormData(form);
+  formData.append('access_key', '2a6b7faa-e2f7-4d94-a015-3c19426e9440');
+
+  const originalText = btn.textContent;
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
   try {
-    let res = await fetch('https://formspree.io/f/xeepover', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ email: input.value })
+      body: formData
     });
+
+    const data = await res.json();
 
     if (res.ok) {
       input.value = '';
       input.placeholder = '✦ You\'re in! Welcome to the Ayra era.';
       input.style.borderColor = '#E8547A';
     } else {
-      input.placeholder = 'Something went wrong. Try again ✦';
+      input.placeholder = 'Error: ' + data.message;
       input.style.borderColor = '#E8A44A';
     }
   } catch {
     input.placeholder = 'Something went wrong. Try again ✦';
     input.style.borderColor = '#E8A44A';
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
   }
 });
 </script>
