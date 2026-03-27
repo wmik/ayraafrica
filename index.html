@@ -818,7 +818,7 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
- document.getElementById('ctaBtn').addEventListener('click', async () => {
+ document.getElementById('btn-cta').addEventListener('click', async () => {
   let input = document.getElementById('emailInput');
 
   if (!input.value || !input.value.includes('@')) {
