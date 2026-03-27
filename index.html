@@ -819,7 +819,7 @@
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
  document.querySelector('.btn-cta').addEventListener('click', async () => {
-  let input = document.getElementById('emailInput');
+  let input = document.querySelector('.email-input');
 
   if (!input.value || !input.value.includes('@')) {
     input.style.borderColor = '#E8A44A';
