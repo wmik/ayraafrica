@@ -776,10 +776,10 @@
   <div class="cta-inner">
     <h2 class="cta-title reveal">Join the<br><em>Ayra era.</em></h2>
     <p class="cta-sub reveal reveal-delay-1">Be first to know when new planners drop. No noise — just your next level.</p>
-    <form class="email-form reveal reveal-delay-2" action="https://formspree.io/f/xeepover" method="POST">
-      <label><input name="email" class="email-input" type="email" placeholder="jeandoe@mail.com" /></label>
+    <div class="email-form reveal reveal-delay-2">
+      <input name="email" class="email-input" type="email" placeholder="jeandoe@mail.com" />
       <button type="submit" class="btn-cta">I'm in ✦</button>
-    </form>
+    </div>
     <p class="cta-note reveal reveal-delay-3">No spam. Unsubscribe anytime. Just girl goals.</p>
   </div>
 </section>
@@ -818,17 +818,35 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  document.querySelector('.btn-cta').addEventListener('click', () => {
-    const input = document.querySelector('.email-input');
-    if (input.value && input.value.includes('@')) {
+ document.getElementById('ctaBtn').addEventListener('click', async () => {
+  let input = document.getElementById('emailInput');
+
+  if (!input.value || !input.value.includes('@')) {
+    input.style.borderColor = '#E8A44A';
+    input.placeholder = 'Enter a valid email ✦';
+    return;
+  }
+
+  try {
+    let res = await fetch('https://formspree.io/f/xeepover', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email: input.value })
+    });
+
+    if (res.ok) {
       input.value = '';
       input.placeholder = '✦ You\'re in! Welcome to the Ayra era.';
       input.style.borderColor = '#E8547A';
     } else {
+      input.placeholder = 'Something went wrong. Try again ✦';
       input.style.borderColor = '#E8A44A';
-      input.placeholder = 'Enter a valid email ✦';
     }
-  });
+  } catch {
+    input.placeholder = 'Something went wrong. Try again ✦';
+    input.style.borderColor = '#E8A44A';
+  }
+});
 </script>
 </body>
 </html>
