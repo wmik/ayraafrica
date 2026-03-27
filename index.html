@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ayra Africa — That African Woman Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink:       #E8547A;
+    --pink-light: #F4A0B8;
+    --blush:      #FDEEF4;
+    --cream:      #FFF9F5;
+    --plum:       #2D0A1F;
+    --plum-mid:   #5C1A3C;
+    --gold:       #E8A44A;
+    --gold-light: #F5CDA0;
+    --white:      #FFFFFF;
+    --text-dark:  #1A0812;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--pink);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: multiply;
+  }
+  .cursor.big { width: 40px; height: 40px; background: var(--pink-light); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: transparent;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(255,249,245,0.88);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .logo-mark { width: 38px; height: 38px; }
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 14px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--plum); line-height: 1.2;
+  }
+  .logo-text span { display: block; font-size: 9px; font-weight: 500; letter-spacing: 0.3em; color: var(--pink); }
+  .nav-links {
+    display: flex; align-items: center; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; color: var(--plum);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--pink); }
+  .nav-cta {
+    background: var(--pink);
+    color: var(--white) !important;
+    padding: 10px 24px; border-radius: 100px;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--plum) !important; transform: scale(1.04); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 120px 48px 80px;
+    background: var(--cream);
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.07;
+    background-image:
+      repeating-linear-gradient(45deg, var(--pink) 0, var(--pink) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 28px 28px;
+  }
+  .hero-blob {
+    position: absolute; border-radius: 50%; filter: blur(80px); z-index: 0;
+    animation: drift 8s ease-in-out infinite;
+  }
+  .blob-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,84,122,0.15), transparent 70%);
+    top: -100px; right: -100px; animation-delay: 0s;
+  }
+  .blob-2 {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(232,164,74,0.12), transparent 70%);
+    bottom: 50px; left: -80px; animation-delay: -4s;
+  }
+  .blob-3 {
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(232,84,122,0.08), transparent 70%);
+    top: 40%; left: 40%; animation-delay: -2s;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -20px) scale(1.05); }
+  }
+
+  .sparkle { position: absolute; z-index: 1; animation: sparkle-pulse 2.5s ease-in-out infinite; }
+  .sparkle svg { fill: var(--pink); }
+  @keyframes sparkle-pulse {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+    50% { transform: scale(1.3) rotate(15deg); opacity: 0.9; }
+  }
+  .sp-1 { top: 18%; left: 8%; animation-delay: 0s; }
+  .sp-2 { top: 35%; right: 12%; animation-delay: 0.8s; }
+  .sp-3 { bottom: 28%; right: 28%; animation-delay: 1.6s; }
+  .sp-4 { top: 70%; left: 20%; animation-delay: 0.4s; }
+
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--pink); color: var(--white);
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 8px 18px; border-radius: 100px; margin-bottom: 32px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-tag::before { content: '✦'; font-size: 10px; animation: spin 3s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(60px, 9vw, 140px);
+    line-height: 0.92; font-weight: 700;
+    color: var(--plum); letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .hero-headline em { font-style: italic; color: var(--pink); font-weight: 300; }
+  .hero-headline .outline-text { -webkit-text-stroke: 2px var(--plum); color: transparent; }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-style: italic; font-weight: 300; color: var(--plum-mid);
+    margin-bottom: 48px;
+    opacity: 0; transform: translateY(24px); animation: fadeUp 0.7s 0.7s forwards;
+  }
+  .hero-line-1 { opacity: 0; transform: translateY(30px); animation: fadeUp 0.7s 0.3s forwards; }
+  .hero-line-2 { opacity: 0; transform: translateY(30px); animation: fadeUp 0.7s 0.5s forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+    opacity: 0; transform: translateY(20px); animation: fadeUp 0.7s 0.9s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--pink); color: var(--white);
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 18px 36px; border-radius: 100px; text-decoration: none;
+    border: 2px solid var(--pink);
+    transition: background 0.25s, color 0.25s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--white); transform: translateX(-101%);
+    transition: transform 0.3s ease; z-index: 0;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+  .btn-primary:hover { color: var(--pink); }
+  .btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--plum); font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    letter-spacing: 0.06em; padding: 18px 12px;
+    border-bottom: 2px solid var(--pink);
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--pink); }
+
+  .hero-scroll-hint {
+    position: absolute; bottom: 32px; left: 48px; z-index: 2;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0; animation: fadeUp 0.7s 1.4s forwards;
+  }
+  .scroll-line {
+    width: 48px; height: 1px; background: var(--pink);
+    transform-origin: left; animation: grow-line 1s 2s forwards; transform: scaleX(0);
+  }
+  @keyframes grow-line { to { transform: scaleX(1); } }
+  .scroll-label {
+    font-family: 'Syne', sans-serif; font-size: 11px;
+    font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--plum-mid);
+  }
+
+  /* Floating planner */
+  .hero-visual {
+    position: absolute; right: 48px; bottom: 60px; z-index: 2;
+    opacity: 0; transform: translateY(30px) rotate(6deg);
+    animation: floatIn 0.8s 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes floatIn { to { opacity: 1; transform: translateY(0) rotate(6deg); } }
+  .planner-card {
+    width: 180px;
+    background: linear-gradient(135deg, #FDE8F0 0%, #FADDE9 100%);
+    border-radius: 12px 12px 12px 2px; padding: 20px;
+    box-shadow: 0 30px 60px rgba(232,84,122,0.15), 0 0 0 1px rgba(232,84,122,0.08);
+    position: relative; overflow: hidden;
+    animation: float-card 4s ease-in-out infinite; animation-delay: 1.8s;
+  }
+  @keyframes float-card {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .planner-elastic {
+    position: absolute; top: 0; bottom: 0; left: 24px;
+    width: 6px; background: var(--pink); border-radius: 3px;
+  }
+  .planner-pattern {
+    position: absolute; top: 0; right: 0; width: 60px; height: 100%;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(232,84,122,0.18) 0px, rgba(232,84,122,0.18) 2px, transparent 2px, transparent 10px),
+      repeating-linear-gradient(-45deg, rgba(232,164,74,0.22) 0px, rgba(232,164,74,0.22) 2px, transparent 2px, transparent 10px);
+    background-size: 12px 12px;
+  }
+  .planner-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; font-weight: 700; color: var(--plum);
+    line-height: 1.2; margin-left: 18px; margin-top: 8px; position: relative; z-index: 1;
+  }
+  .planner-title em { color: var(--pink); font-style: italic; font-size: 18px; }
+  .planner-sub {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px;
+    color: var(--plum-mid); margin-left: 18px; margin-top: 4px; position: relative; z-index: 1;
+  }
+  .planner-lines { margin-left: 18px; margin-top: 16px; position: relative; z-index: 1; }
+  .planner-line {
+    height: 1.5px; background: rgba(44,10,31,0.12); border-radius: 1px; margin-bottom: 8px;
+  }
+  .planner-line:nth-child(1){width:80%} .planner-line:nth-child(2){width:60%}
+  .planner-line:nth-child(3){width:70%} .planner-line:nth-child(4){width:45%}
+  .planner-badge {
+    position: absolute; bottom: 12px; right: 12px;
+    width: 32px; height: 32px; background: var(--pink);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2;
+  }
+  .planner-badge svg { fill: white; width: 16px; height: 16px; }
+
+  .hero-visual-2 {
+    position: absolute; right: 28px; bottom: 44px; z-index: 1;
+    width: 180px; height: 240px;
+    background: linear-gradient(135deg, #EDE0F5 0%, #E4D0F0 100%);
+    border-radius: 12px 12px 12px 2px;
+    box-shadow: 0 20px 40px rgba(92,26,60,0.1);
+    opacity: 0; transform: translateY(30px) rotate(2deg);
+    animation: floatIn2 0.8s 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes floatIn2 { to { opacity: 1; transform: translateY(0) rotate(2deg); } }
+  .hero-visual-2 .planner-elastic { background: #9B59B6; }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap { background: var(--pink); overflow: hidden; padding: 18px 0; }
+  .marquee-track {
+    display: flex; animation: marquee 18s linear infinite; white-space: nowrap;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  .marquee-item {
+    display: inline-flex; align-items: center; gap: 28px; padding-right: 28px;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--white); flex-shrink: 0;
+  }
+  .marquee-dot { color: var(--gold-light); font-size: 18px; line-height: 1; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── MANIFESTO ── */
+  .manifesto {
+    background: var(--plum); padding: 120px 48px;
+    position: relative; overflow: hidden;
+  }
+  .manifesto-bg-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 280px; font-weight: 700; color: rgba(255,255,255,0.025);
+    white-space: nowrap; pointer-events: none; letter-spacing: -0.05em;
+  }
+  .manifesto-inner { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; text-align: center; }
+  .manifesto-label {
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 48px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+  }
+  .manifesto-label::before, .manifesto-label::after {
+    content: ''; display: block; width: 36px; height: 1px; background: var(--gold);
+  }
+  .manifesto-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 72px); font-weight: 300; font-style: italic;
+    color: var(--white); line-height: 1.2;
+  }
+  .manifesto-quote strong { font-style: normal; font-weight: 700; color: var(--pink-light); }
+  .manifesto-lines {
+    margin-top: 56px; display: flex; justify-content: center; gap: 64px; flex-wrap: wrap;
+  }
+  .manifesto-line-item .number {
+    font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 700;
+    color: var(--pink-light); line-height: 1;
+  }
+  .manifesto-line-item .label {
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 6px;
+  }
+
+  /* ── PRODUCT ── */
+  .product { padding: 120px 48px; background: var(--cream); }
+  .section-header { margin-bottom: 72px; }
+  .section-label {
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--pink); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: '✦'; font-size: 10px; animation: spin 4s linear infinite; }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 6vw, 88px); font-weight: 700; line-height: 0.95;
+    color: var(--plum); letter-spacing: -0.02em;
+  }
+  .section-title em { font-style: italic; color: var(--pink); font-weight: 300; }
+
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+
+  .product-visual-wrap {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    min-height: 520px;
+  }
+  .product-bg-circle {
+    width: 400px; height: 400px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blush) 0%, #F9DDE8 100%);
+    position: absolute;
+  }
+  .big-planner { position: relative; z-index: 2; width: 220px; animation: float-card 5s ease-in-out infinite; }
+  .big-planner-card {
+    background: linear-gradient(160deg, #FDE8F2 0%, #FADCE8 100%);
+    border-radius: 16px 16px 16px 4px; padding: 28px;
+    box-shadow: 0 40px 80px rgba(232,84,122,0.16), 0 0 0 1.5px rgba(232,84,122,0.08);
+    position: relative; overflow: hidden; min-height: 300px;
+  }
+  .big-planner-elastic {
+    position: absolute; top: 0; bottom: 0; left: 28px;
+    width: 7px; background: var(--pink); border-radius: 4px;
+  }
+  .big-planner-kente {
+    position: absolute; top: 0; right: 0; width: 70px; height: 100%;
+    display: flex; flex-direction: column;
+  }
+  .kente-row { flex: 1; display: flex; }
+  .kente-cell { flex: 1; border: 1px solid rgba(255,255,255,0.3); }
+  .kente-cell.k1 { background: rgba(232,84,122,0.2); }
+  .kente-cell.k2 { background: rgba(232,164,74,0.28); }
+  .kente-cell.k3 { background: rgba(92,26,60,0.18); }
+  .kente-cell.k4 { background: rgba(232,84,122,0.12); }
+  .big-planner-content { margin-left: 22px; position: relative; z-index: 1; }
+  .big-planner-title { font-family: 'Cormorant Garamond', serif; margin-top: 12px; line-height: 1.1; }
+  .big-planner-title .that { font-size: 13px; color: var(--plum-mid); font-style: italic; font-weight: 400; }
+  .big-planner-title .african { font-size: 22px; color: var(--pink); font-weight: 700; }
+  .big-planner-title .woman { font-size: 22px; color: var(--plum); font-weight: 700; }
+  .big-planner-title .planner-word { font-size: 18px; color: var(--plum); font-style: italic; font-weight: 400; }
+  .big-planner-lines { margin-top: 24px; }
+  .big-planner-line { height: 1.5px; background: rgba(44,10,31,0.1); border-radius: 1px; margin-bottom: 10px; }
+  .big-planner-line:nth-child(1){width:78%} .big-planner-line:nth-child(2){width:55%}
+  .big-planner-line:nth-child(3){width:68%} .big-planner-line:nth-child(4){width:42%}
+  .big-planner-line:nth-child(5){width:60%}
+
+  .big-planner-2 {
+    position: absolute; z-index: 1; width: 200px;
+    transform: rotate(8deg) translate(60px, 20px);
+  }
+  .big-planner-card-2 {
+    background: linear-gradient(160deg, #EDE0F5 0%, #E2D3F0 100%);
+    border-radius: 16px 16px 16px 4px; min-height: 280px; padding: 24px;
+    box-shadow: 0 30px 60px rgba(92,26,60,0.1);
+    position: relative; overflow: hidden;
+  }
+  .big-planner-elastic-2 {
+    position: absolute; top: 0; bottom: 0; left: 24px;
+    width: 7px; background: #9B59B6; border-radius: 4px;
+  }
+
+  .product-info { padding-top: 40px; }
+  .product-desc {
+    font-size: 18px; line-height: 1.7; color: var(--plum-mid);
+    margin-top: 24px; margin-bottom: 48px; max-width: 480px;
+  }
+  .features-list { display: flex; flex-direction: column; gap: 24px; }
+  .feature-item {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 24px; background: var(--white); border-radius: 16px;
+    border: 1.5px solid transparent;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .feature-item:hover {
+    border-color: var(--pink); transform: translateX(6px);
+    box-shadow: 0 8px 32px rgba(232,84,122,0.08);
+  }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--blush); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 20px;
+  }
+  .feature-text .title {
+    font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+    color: var(--plum); margin-bottom: 4px;
+  }
+  .feature-text .desc { font-size: 14px; color: var(--plum-mid); line-height: 1.5; }
+
+  /* ── COPY SECTION ── */
+  .copy-section {
+    padding: 100px 48px; background: var(--blush);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .copy-section::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(232,84,122,0.05), transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(232,164,74,0.05), transparent 50%);
+  }
+  .copy-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5.5vw, 80px); font-weight: 700; line-height: 1.05;
+    color: var(--plum); position: relative; z-index: 1;
+  }
+  .copy-headline em { color: var(--pink); font-style: italic; font-weight: 300; }
+  .copy-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 28px); font-style: italic; font-weight: 300;
+    color: var(--plum-mid); margin-top: 20px; margin-bottom: 52px; position: relative; z-index: 1;
+  }
+  .copy-tags { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .copy-tag {
+    padding: 10px 22px; border-radius: 100px;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+    border: 2px solid var(--pink); color: var(--pink);
+    transition: background 0.2s, color 0.2s, transform 0.2s; cursor: default;
+  }
+  .copy-tag:hover { background: var(--pink); color: var(--white); transform: translateY(-2px); }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--plum); padding: 120px 48px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(232,84,122,0.035) 0, rgba(232,84,122,0.035) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, rgba(232,164,74,0.035) 0, rgba(232,164,74,0.035) 1px, transparent 0, transparent 50%);
+    background-size: 24px 24px;
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 7vw, 100px); font-weight: 700; line-height: 0.92;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .cta-title em { color: var(--pink-light); font-style: italic; font-weight: 300; }
+  .cta-sub {
+    font-family: 'DM Sans', sans-serif; font-size: 17px;
+    color: rgba(255,255,255,0.6); margin-bottom: 52px;
+  }
+  .email-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 520px; margin: 0 auto; }
+  .email-input {
+    flex: 1; min-width: 220px;
+    background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 100px; padding: 18px 28px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--white); outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .email-input::placeholder { color: rgba(255,255,255,0.35); }
+  .email-input:focus { border-color: var(--pink); background: rgba(232,84,122,0.07); }
+  .btn-cta {
+    background: var(--pink); color: var(--white);
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 18px 32px; border-radius: 100px; border: none; cursor: pointer;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .btn-cta:hover { background: var(--pink-light); transform: scale(1.03); }
+  .btn-cta:active { transform: scale(0.97); }
+  .cta-note { font-size: 13px; color: rgba(255,255,255,0.3); margin-top: 20px; font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--plum); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 48px; display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--white); }
+  .footer-logo span { color: var(--pink); font-style: italic; }
+  .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); font-style: italic; font-family: 'Cormorant Garamond', serif; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--pink); }
+
+  /* ── SCROLL REVEALS ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.35s; }
+  .reveal-delay-4 { transition-delay: 0.5s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 160px; }
+    .hero-visual, .hero-visual-2 { right: 24px; bottom: 24px; }
+    .manifesto { padding: 80px 24px; }
+    .product { padding: 80px 24px; }
+    .product-grid { grid-template-columns: 1fr; }
+    .product-visual-wrap { min-height: 360px; }
+    .copy-section { padding: 80px 24px; }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+    .hero-visual-2 { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="19" stroke="#E8547A" stroke-width="1.5" fill="none"/>
+      <path d="M20 10 C14 10 10 14 10 20 C10 26 14 30 20 30 C26 30 30 26 30 20" stroke="#E8547A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M20 30 C26 30 30 26 30 20 C30 14 26 10 20 10 C14 10 10 14 10 20" stroke="#9B59B6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="20" cy="20" r="3" fill="#E8547A"/>
+    </svg>
+    <div class="logo-text">
+      Ayra
+      <span>Africa</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#product">The Planner</a></li>
+    <li><a href="#manifesto">Our Why</a></li>
+    <li><a href="#cta" class="nav-cta">Get Yours</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div class="hero-blob blob-3"></div>
+
+  <div class="sparkle sp-1"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 0L13.5 10.5L24 12L13.5 13.5L12 24L10.5 13.5L0 12L10.5 10.5Z"/></svg></div>
+  <div class="sparkle sp-2"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 0L13.5 10.5L24 12L13.5 13.5L12 24L10.5 13.5L0 12L10.5 10.5Z"/></svg></div>
+  <div class="sparkle sp-3"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 0L13.5 10.5L24 12L13.5 13.5L12 24L10.5 13.5L0 12L10.5 10.5Z"/></svg></div>
+  <div class="sparkle sp-4"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 0L13.5 10.5L24 12L13.5 13.5L12 24L10.5 13.5L0 12L10.5 10.5Z"/></svg></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">✦ Planners · Journals · Vision Tools</div>
+    <h1 class="hero-headline">
+      <div class="hero-line-1">For the <em>girls</em></div>
+      <div class="hero-line-2"><span class="outline-text">becoming</span></div>
+      <div class="hero-line-1" style="animation-delay:0.4s">everything.</div>
+    </h1>
+    <p class="hero-sub">African. Ambitious. Intentional.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">
+        <span>Get the Planner</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#manifesto" class="btn-ghost">Our story →</a>
+    </div>
+  </div>
+
+  <div class="hero-visual-2"><div class="big-planner-elastic-2"></div></div>
+  <div class="hero-visual">
+    <div class="planner-card">
+      <div class="planner-elastic"></div>
+      <div class="planner-pattern"></div>
+      <div class="planner-title">
+        <span style="font-size:11px;font-style:italic;color:#5C1A3C;display:block;">That</span>
+        <em>African<br>Woman</em><br>
+        <span style="font-style:italic;font-weight:400;font-size:14px;color:#2D0A1F;">Planner</span>
+      </div>
+      <div class="planner-lines">
+        <div class="planner-line"></div>
+        <div class="planner-line"></div>
+        <div class="planner-line"></div>
+        <div class="planner-line"></div>
+      </div>
+      <div class="planner-badge">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5Z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Scroll to explore</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Plan, Achieve, Repeat <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Girl got goals <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">African. Ambitious. Intentional <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Effort looks good on you <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Less stress. More balance <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Join the Ayra era <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Plan, Achieve, Repeat <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Girl got goals <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">African. Ambitious. Intentional <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Effort looks good on you <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Less stress. More balance <span class="marquee-dot">✦</span></div>
+    <div class="marquee-item">Join the Ayra era <span class="marquee-dot">✦</span></div>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="manifesto-bg-text">AYRA</div>
+  <div class="manifesto-inner">
+    <div class="manifesto-label reveal">Our Manifesto</div>
+    <p class="manifesto-quote reveal reveal-delay-1">
+      Goals don't have to feel <strong>heavy.</strong><br>
+      Effort can feel <strong>soft.</strong><br>
+      Progress can feel <strong>good.</strong>
+    </p>
+    <div class="manifesto-lines">
+      <div class="manifesto-line-item reveal reveal-delay-1"><div class="number">✦</div><div class="label">Plan with intention</div></div>
+      <div class="manifesto-line-item reveal reveal-delay-2"><div class="number">✦</div><div class="label">Built for her</div></div>
+      <div class="manifesto-line-item reveal reveal-delay-3"><div class="number">✦</div><div class="label">Made in Africa</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section class="product" id="product">
+  <div class="section-header reveal">
+    <div class="section-label">The Product</div>
+    <h2 class="section-title">Meet your new<br><em>favourite tool.</em></h2>
+  </div>
+  <div class="product-grid">
+    <div class="product-visual-wrap reveal">
+      <div class="product-bg-circle"></div>
+      <div class="big-planner-2">
+        <div class="big-planner-card-2"><div class="big-planner-elastic-2"></div></div>
+      </div>
+      <div class="big-planner">
+        <div class="big-planner-card">
+          <div class="big-planner-elastic"></div>
+          <div class="big-planner-kente">
+            <div class="kente-row"><div class="kente-cell k1"></div><div class="kente-cell k2"></div><div class="kente-cell k3"></div></div>
+            <div class="kente-row"><div class="kente-cell k2"></div><div class="kente-cell k4"></div><div class="kente-cell k1"></div></div>
+            <div class="kente-row"><div class="kente-cell k3"></div><div class="kente-cell k1"></div><div class="kente-cell k2"></div></div>
+            <div class="kente-row"><div class="kente-cell k1"></div><div class="kente-cell k3"></div><div class="kente-cell k4"></div></div>
+            <div class="kente-row"><div class="kente-cell k4"></div><div class="kente-cell k2"></div><div class="kente-cell k1"></div></div>
+          </div>
+          <div class="big-planner-content">
+            <div class="big-planner-title">
+              <span class="that">That</span><br>
+              <span class="african">African</span><br>
+              <span class="woman">Woman</span><br>
+              <span class="planner-word">Planner</span>
+            </div>
+            <div class="big-planner-lines">
+              <div class="big-planner-line"></div><div class="big-planner-line"></div>
+              <div class="big-planner-line"></div><div class="big-planner-line"></div>
+              <div class="big-planner-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <p class="product-desc reveal reveal-delay-1">To the daughter of Africa — this planner is for you. Designed for the woman who is ambitious, organised, and unapologetically building her next level.</p>
+      <div class="features-list">
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-text">
+            <div class="title">Goal Architecture</div>
+            <div class="desc">Quarterly, monthly and weekly structures that turn big visions into daily wins.</div>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-text">
+            <div class="title">Built for the African Woman</div>
+            <div class="desc">Prompts and layouts rooted in our culture — celebrating who you are, not erasing it.</div>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-3">
+          <div class="feature-icon">✨</div>
+          <div class="feature-text">
+            <div class="title">Vision Tools Included</div>
+            <div class="desc">Mindset pages, vision board spreads, and reflection prompts for the full journey.</div>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-4">
+          <div class="feature-icon">💅</div>
+          <div class="feature-text">
+            <div class="title">Made Beautiful, On Purpose</div>
+            <div class="desc">Because your planning tools should feel as good as your goals look.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COPY SECTION -->
+<section class="copy-section">
+  <h2 class="copy-headline reveal">
+    She's not doing <em>too much.</em><br>
+    She's doing what <em>matters.</em>
+  </h2>
+  <p class="copy-sub reveal reveal-delay-1">Less stress. More balance. Your era starts here.</p>
+  <div class="copy-tags reveal reveal-delay-2">
+    <span class="copy-tag">African</span>
+    <span class="copy-tag">Ambitious</span>
+    <span class="copy-tag">Intentional</span>
+    <span class="copy-tag">Organised</span>
+    <span class="copy-tag">Unstoppable</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-inner">
+    <h2 class="cta-title reveal">Join the<br><em>Ayra era.</em></h2>
+    <p class="cta-sub reveal reveal-delay-1">Be first to know when new planners drop. No noise — just your next level.</p>
+    <div class="email-form reveal reveal-delay-2">
+      <input class="email-input" type="email" placeholder="your@email.com" />
+      <button class="btn-cta">I'm in ✦</button>
+    </div>
+    <p class="cta-note reveal reveal-delay-3">No spam. Unsubscribe anytime. Just girl goals.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Ayra <span>Africa</span></div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">Shop</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">For the girls becoming everything. ✦</div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .feature-item, .copy-tag').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelector('.btn-cta').addEventListener('click', () => {
+    const input = document.querySelector('.email-input');
+    if (input.value && input.value.includes('@')) {
+      input.value = '';
+      input.placeholder = '✦ You\'re in! Welcome to the Ayra era.';
+      input.style.borderColor = '#E8547A';
+    } else {
+      input.style.borderColor = '#E8A44A';
+      input.placeholder = 'Enter a valid email ✦';
+    }
+  });
+</script>
+</body>
+</html>
