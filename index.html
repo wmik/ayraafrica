@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ayra Africa — That African Woman Planner</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" />
+
+<!-- OG / Social -->
+<meta name="description" content="Planners, journals and vision tools for the ambitious, intentional African woman. Organising your next level.">
+<meta property="og:title" content="Ayra Africa — That African Woman Planner">
+<meta property="og:description" content="For the girls becoming everything. Planners · Journals · Vision Tools.">
+<meta property="og:image" content="https://ayraafrica.co.ke/og-image.jpg">
+<meta property="og:url" content="https://ayraafrica.co.ke/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ayra Africa — That African Woman Planner">
+<meta name="twitter:description" content="For the girls becoming everything. Planners · Journals · Vision Tools.">
+<meta name="twitter:image" content="https://ayraafrica.co.ke/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="b12ceb8a-cfc6-4ef4-ae8d-b26bff4ee80e"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -88,6 +101,68 @@
     transition: background 0.2s, transform 0.2s !important;
   }
   .nav-cta:hover { background: var(--plum) !important; transform: scale(1.04); }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; justify-content: center; gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+    z-index: 201;
+  }
+  .nav-hamburger span {
+    display: block; height: 2px; width: 100%; border-radius: 2px;
+    background: var(--plum);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-hamburger span:nth-child(2) { width: 70%; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE DRAWER ── */
+  .mobile-drawer {
+    display: none;
+    position: fixed; inset: 0; z-index: 199;
+    pointer-events: none;
+  }
+  .mobile-drawer.open { pointer-events: all; }
+  .drawer-overlay {
+    position: absolute; inset: 0;
+    background: rgba(45,10,31,0.45);
+    opacity: 0; transition: opacity 0.35s ease;
+    backdrop-filter: blur(4px);
+  }
+  .mobile-drawer.open .drawer-overlay { opacity: 1; }
+  .drawer-panel {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: min(300px, 85vw);
+    background: var(--cream);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    display: flex; flex-direction: column;
+    padding: 90px 36px 48px; gap: 4px;
+  }
+  .mobile-drawer.open .drawer-panel { transform: translateX(0); }
+  .drawer-link {
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--plum); text-decoration: none;
+    padding: 16px 0; border-bottom: 1px solid rgba(45,10,31,0.08);
+    transition: color 0.2s;
+  }
+  .drawer-link:hover { color: var(--pink); }
+  .drawer-cta {
+    margin-top: 28px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--pink); color: var(--white);
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 16px 28px; border-radius: 100px; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .drawer-cta:hover { background: var(--plum); }
 
   /* ── HERO ── */
   .hero {
@@ -548,6 +623,8 @@
   @media (max-width: 900px) {
     nav { padding: 18px 24px; }
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .mobile-drawer { display: block; }
     .hero { padding: 100px 24px 160px; }
     .hero-visual, .hero-visual-2 { right: 24px; bottom: 24px; }
     .manifesto { padding: 80px 24px; }
@@ -585,7 +662,20 @@
     <li><a href="#manifesto">Our Why</a></li>
     <li><a href="#cta" class="nav-cta">Get Yours</a></li>
   </ul>
+  <button type="button" class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="drawer-panel">
+    <a class="drawer-link" href="#product" onclick="closeDrawer()">The Planner</a>
+    <a class="drawer-link" href="#manifesto" onclick="closeDrawer()">Our Why</a>
+    <a class="drawer-cta" href="#cta" onclick="closeDrawer()">Get Yours</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -602,9 +692,9 @@
   <div class="hero-content">
     <div class="hero-tag">✦ Planners · Journals · Vision Tools</div>
     <h1 class="hero-headline">
-      <div class="hero-line-1">For the <em>girls</em></div>
-      <div class="hero-line-2"><span class="outline-text">becoming</span></div>
-      <div class="hero-line-1" style="animation-delay:0.4s">everything.</div>
+      <span class="hero-line-1">For the <em>girls</em></span>
+      <span class="hero-line-2"><span class="outline-text">becoming</span></span>
+      <span class="hero-line-1" style="animation-delay:0.4s">everything.</span>
     </h1>
     <p class="hero-sub">African. Ambitious. Intentional.</p>
     <div class="hero-actions">
@@ -797,6 +887,28 @@
 </footer>
 
 <script>
+  // Hamburger / drawer
+  const hamburger = document.getElementById('hamburger');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+
+  function openDrawer() {
+    mobileDrawer.classList.add('open');
+    hamburger.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    mobileDrawer.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  
+  hamburger.addEventListener('click', () => {
+    mobileDrawer.classList.contains('open') ? closeDrawer() : openDrawer();
+  });
+  drawerOverlay.addEventListener('click', closeDrawer);
+
+  // Cursor
   const cursor = document.getElementById('cursor');
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
@@ -807,11 +919,13 @@
     el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
   });
 
+  // Nav scroll
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
   });
 
+  // Scroll reveals
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
@@ -819,51 +933,52 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-const form = document.getElementById('form');
-const input = document.querySelector('.email-input');
-const btn = form.querySelector('button[type="submit"]');
+  // Form
+  const form = document.getElementById('form');
+  const input = document.querySelector('.email-input');
+  const btn = form.querySelector('button[type="submit"]');
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  if (!input.value || !input.value.includes('@')) {
-    input.style.borderColor = '#E8A44A';
-    input.placeholder = 'Enter a valid email ✦';
-    input.value = '';
-    return;
-  }
-
-  const formData = new FormData(form);
-  formData.append('access_key', '2a6b7faa-e2f7-4d94-a015-3c19426e9440');
-
-  const originalText = btn.textContent;
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: formData
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      input.value = '';
-      input.placeholder = '✦ You\'re in! Welcome to the Ayra era.';
-      input.style.borderColor = '#E8547A';
-    } else {
-      input.placeholder = 'Error: ' + data.message;
+    if (!input.value || !input.value.includes('@')) {
       input.style.borderColor = '#E8A44A';
+      input.placeholder = 'Enter a valid email ✦';
+      input.value = '';
+      return;
     }
-  } catch {
-    input.placeholder = 'Something went wrong. Try again ✦';
-    input.style.borderColor = '#E8A44A';
-  } finally {
-    btn.textContent = originalText;
-    btn.disabled = false;
-  }
-});
+
+    const formData = new FormData(form);
+    formData.append('access_key', '2a6b7faa-e2f7-4d94-a015-3c19426e9440');
+
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        input.value = '';
+        input.placeholder = '✦ You\'re in! Welcome to the Ayra era.';
+        input.style.borderColor = '#E8547A';
+      } else {
+        input.placeholder = 'Error: ' + data.message;
+        input.style.borderColor = '#E8A44A';
+      }
+    } catch {
+      input.placeholder = 'Something went wrong. Try again ✦';
+      input.style.borderColor = '#E8A44A';
+    } finally {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>
