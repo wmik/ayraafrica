@@ -18,6 +18,9 @@
 <meta name="twitter:image" content="https://ayraafrica.s3.us-east-1.amazonaws.com/images/og-image.png">
 
 <link rel="icon" href="https://ayraafrica.s3.us-east-1.amazonaws.com/images/favicon.ico" type="image/x-icon">
+<link rel="preload" as="image" href="https://ayraafrica.s3.us-east-1.amazonaws.com/images/planner.webp">
+<link rel="preload" as="image" href="https://ayraafrica.s3.us-east-1.amazonaws.com/images/planner_package.webp">
+<link rel="preload" as="image" href="https://ayraafrica.s3.us-east-1.amazonaws.com/images/planner_open.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap">
@@ -54,7 +57,8 @@
     border-radius: 50%;
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
     transition: width 0.3s, height 0.3s, background 0.3s;
     mix-blend-mode: multiply;
   }
@@ -283,7 +287,7 @@
 
   /* ── MARQUEE ── */
   .marquee-wrap { background: var(--pink); overflow: hidden; padding: 18px 0; }
-  .marquee-track { display: flex; animation: marquee 18s linear infinite; white-space: nowrap; }
+  .marquee-track { display: flex; animation: marquee 18s linear infinite; white-space: nowrap; will-change: transform; transform: translateZ(0); }
   .marquee-track:hover { animation-play-state: paused; }
   .marquee-item {
     display: inline-flex; align-items: center; gap: 28px; padding-right: 28px;
@@ -531,6 +535,7 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
+    .hero-pattern, .hero-blob, .sparkle, .cta-bg, .manifesto-bg-text, .testimonials-bg-text { display: none; }
     nav { padding: 18px 24px; }
     .nav-links { display: none; }
     .nav-hamburger { display: flex; }
@@ -547,6 +552,12 @@
     .cta-section { padding: 80px 24px; }
     footer { padding: 32px 24px; flex-direction: column; text-align: center; }
     .footer-social { justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .marquee-track { animation: none; transform: none; }
+    .cursor { display: none; }
   }
 </style>
 </head>
@@ -875,12 +886,15 @@
   drawerOverlay.addEventListener('click', closeDrawer);
 
   // ── Cursor
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
-  document.querySelectorAll('a, button, .feature-item, .copy-tag, .faq-item').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
-  });
+  if (window.matchMedia('hover: hover')) {
+    let rafId = null;
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => { if(rafId) { cancelAnimationFrame(rafId); } rafId = requestAnimationFrame(() =>  { cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`; rafId = null; }); });
+    document.querySelectorAll('a, button, .feature-item, .copy-tag, .faq-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+    });
+  }
 
   // ── Nav scroll
   const nav = document.getElementById('nav');
@@ -889,7 +903,7 @@
   // ── Scroll reveals
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // ── Hero slideshow
@@ -906,7 +920,7 @@
     dots[current].classList.add('active');
   }
   function next() { goTo((current + 1) % slides.length); }
-  function startAuto() { timer = setInterval(next, 5500); }
+  function startAuto() { if(window.innerWidth <= 900) { return; } timer = setInterval(next, 5500); }
   function stopAuto() { clearInterval(timer); }
 
   dots.forEach(dot => {
