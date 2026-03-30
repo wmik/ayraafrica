@@ -200,7 +200,7 @@
   .scroll-label { font-family: 'Quicksand', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg-secondary); transition: color 0.4s; }
 
   /* ─── HERO SLIDESHOW ─── */
-  .hero-slideshow { /* position: absolute; right: 48px; bottom: 60px; z-index: 2; */ margin-top: 32px; margin-left: auto; margin-right: auto; width: 640px; height: 340px; border-radius: 20px; overflow: hidden; box-shadow: 0 40px 80px rgba(45,10,31,0.2), 0 0 0 1px rgba(232,84,122,0.1); opacity: 0; transform: translateY(30px); animation: floatIn 0.8s 1s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  .hero-slideshow { display: none; position: absolute; right: -24px; bottom: 48px; /* z-index: 2; margin-top: 32px; margin-left: auto; margin-right: auto; */ width: 480px; height: 340px; border-radius: 20px; overflow: hidden; box-shadow: 0 40px 80px rgba(45,10,31,0.2), 0 0 0 1px rgba(232,84,122,0.1); opacity: 0; transform: translateY(30px); animation: floatIn 0.8s 1s cubic-bezier(0.34,1.56,0.64,1) forwards; }
   @keyframes floatIn { to { opacity: 1; transform: translateY(0); } }
   .hero-slideshow img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity 0.8s ease; }
   .hero-slideshow img.active { opacity: 1; }
